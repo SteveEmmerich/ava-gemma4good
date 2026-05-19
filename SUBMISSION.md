@@ -4,7 +4,7 @@ Public demo: https://ava-gemma4good.pages.dev
 
 Ava Brain Worker: https://ava-brain.solitary-mode-3b63.workers.dev
 
-Code repository: TODO - public GitHub or Kaggle Notebook URL.
+Code repository: https://github.com/SteveEmmerich/ava-gemma4good
 
 Demo video: TODO - public YouTube video URL.
 
@@ -76,8 +76,8 @@ Latest local validation:
 ## Final Submission Checklist
 
 - [x] Deploy final Expo export from `apps/ava-mobile/dist`.
-- [ ] Publish the code repository.
+- [x] Publish the code repository.
 - [ ] Record and upload the 3-minute demo video.
-- [ ] Add repo URL and video URL above.
+- [ ] Add video URL above.
 - [x] Run one final browser smoke on the deployed Expo URL.
 - [ ] Submit Kaggle writeup before May 18, 2026 at 11:59 PM UTC.

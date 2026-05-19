@@ -61,3 +61,4 @@ bun --cwd apps/ava-mobile run export:web
 - Final Expo web demo: https://ava-gemma4good.pages.dev
 - Legacy user/admin preview: https://ava-mobile-preview.solitary-mode-3b63.workers.dev
 - Ava Brain Worker: https://ava-brain.solitary-mode-3b63.workers.dev
+- Source repository: https://github.com/SteveEmmerich/ava-gemma4good

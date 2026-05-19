@@ -51,7 +51,7 @@ Recent live smoke result:
 
 ## Code
 
-Repository: TODO - add public GitHub URL
+Repository: https://github.com/SteveEmmerich/ava-gemma4good
 
 Main pieces:
 
