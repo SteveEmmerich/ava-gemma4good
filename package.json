@@ -1,0 +1,19 @@
+{
+  "name": "ava",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter '*' build",
+    "test": "bun test",
+    "typecheck": "bun run --filter '*' typecheck",
+    "web": "bun run --cwd apps/ava-mobile web"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.2",
+    "typescript": "^5.9.3"
+  }
+}

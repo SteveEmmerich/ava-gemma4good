@@ -1,0 +1,8 @@
+node_modules
+.expo
+.wrangler
+dist
+coverage
+*.local
+.DS_Store
+bun.lockb

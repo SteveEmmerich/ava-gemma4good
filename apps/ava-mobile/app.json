@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Ava",
+    "slug": "ava-mobile",
+    "scheme": "ava",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": ["expo-router", "expo-secure-store"],
+    "extra": {
+      "vibebaseIdentityUrl": "$VIBEBASE_IDENTITY_URL",
+      "vibebaseGatewayUrl": "$VIBEBASE_GATEWAY_URL"
+    }
+  }
+}

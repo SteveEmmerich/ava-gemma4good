@@ -1,0 +1,45 @@
+{
+  "name": "@ava/ava-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "deploy:web": "wrangler deploy",
+    "export:web": "expo export -p web",
+    "start": "expo start",
+    "web": "expo start --web",
+    "preview:web": "bun web-preview/server.ts",
+    "preview:worker": "wrangler dev",
+    "ios": "expo start --ios",
+    "android": "expo start --android",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ava/sal-client": "workspace:*",
+    "@ava/shared-types": "workspace:*",
+    "@clerk/clerk-expo": "2.19.31",
+    "@noble/curves": "2.2.0",
+    "expo": "55.0.24",
+    "expo-auth-session": "55.0.16",
+    "expo-constants": "55.0.16",
+    "expo-crypto": "55.0.15",
+    "expo-linking": "55.0.15",
+    "expo-router": "55.0.14",
+    "expo-secure-store": "55.0.14",
+    "expo-web-browser": "55.0.16",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-native": "0.83.6",
+    "react-native-safe-area-context": "~5.6.2",
+    "react-native-screens": "~4.23.0",
+    "react-native-web": "0.21.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20260511.1",
+    "@types/react": "19.2.14",
+    "happy-dom": "20.9.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.49.0"
+  }
+}

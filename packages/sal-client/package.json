@@ -1,0 +1,21 @@
+{
+  "name": "@ava/sal-client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ava/shared-types": "workspace:*",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@noble/curves": "2.2.0",
+    "typescript": "^5.9.3"
+  }
+}

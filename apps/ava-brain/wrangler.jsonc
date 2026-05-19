@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ava-brain",
+  "account_id": "7bf764fb33314638c163c8d9dbccd636",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "ai": {
+    "binding": "AI",
+    "remote": true
+  },
+  "vars": {
+    "BLUEPRINT_MODEL": "@cf/google/gemma-4-26b-a4b-it",
+    "MOCK_BLUEPRINTS": "false"
+  }
+}

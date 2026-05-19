@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ava</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #081110;
+        color: #f8f3ea;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+          radial-gradient(circle at 14% 18%, rgba(65, 193, 176, 0.22), transparent 28%),
+          radial-gradient(circle at 84% 6%, rgba(255, 137, 92, 0.18), transparent 26%),
+          radial-gradient(circle at 72% 84%, rgba(237, 205, 130, 0.12), transparent 30%),
+          linear-gradient(180deg, #071110 0%, #101514 52%, #f4ead8 52%, #f4ead8 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.24;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 42px 42px;
+        mask-image: linear-gradient(180deg, #000 0%, transparent 70%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(1180px, calc(100vw - 32px));
+        margin: 0 auto;
+      }
+
+      nav {
+        position: sticky;
+        top: 14px;
+        z-index: 10;
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border: 1px solid rgba(248, 243, 234, 0.16);
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: rgba(8, 17, 16, 0.74);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+      }
+
+      .brand,
+      .nav-actions,
+      .tiny-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: #54d6c2;
+        color: #081110;
+        font-weight: 950;
+      }
+
+      .brand {
+        font-weight: 900;
+      }
+
+      .nav-actions a {
+        border: 1px solid rgba(248, 243, 234, 0.16);
+        border-radius: 999px;
+        padding: 8px 12px;
+        color: rgba(248, 243, 234, 0.78);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .nav-actions a.primary {
+        border-color: transparent;
+        background: #f8f3ea;
+        color: #081110;
+      }
+
+      .hero {
+        min-height: calc(100vh - 72px);
+        display: grid;
+        grid-template-columns: minmax(0, 0.98fr) minmax(340px, 0.86fr);
+        gap: 34px;
+        align-items: center;
+        padding: 54px 0 76px;
+      }
+
+      .kicker {
+        width: fit-content;
+        border: 1px solid rgba(84, 214, 194, 0.28);
+        border-radius: 999px;
+        padding: 7px 12px;
+        background: rgba(84, 214, 194, 0.09);
+        color: #aaf2e7;
+        font-size: 13px;
+        font-weight: 850;
+        animation: fade-up 700ms ease both;
+      }
+
+      h1 {
+        max-width: 770px;
+        margin: 16px 0 0;
+        font-size: clamp(54px, 8vw, 112px);
+        line-height: 0.88;
+        letter-spacing: 0;
+        animation: fade-up 800ms 80ms ease both;
+      }
+
+      .hero-copy {
+        max-width: 620px;
+        margin: 22px 0 0;
+        color: rgba(248, 243, 234, 0.72);
+        font-size: 19px;
+        line-height: 1.58;
+        animation: fade-up 800ms 160ms ease both;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+        animation: fade-up 800ms 240ms ease both;
+      }
+
+      button,
+      .button {
+        min-height: 48px;
+        border: 0;
+        border-radius: 8px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #54d6c2;
+        color: #081110;
+        font: inherit;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 16px 40px rgba(84, 214, 194, 0.2);
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease,
+          background 160ms ease;
+      }
+
+      button:hover,
+      .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 22px 54px rgba(84, 214, 194, 0.28);
+      }
+
+      .button.secondary {
+        border: 1px solid rgba(248, 243, 234, 0.16);
+        background: rgba(248, 243, 234, 0.08);
+        color: #f8f3ea;
+        box-shadow: none;
+      }
+
+      button:disabled {
+        cursor: wait;
+        opacity: 0.72;
+        transform: none;
+      }
+
+      .stage {
+        position: relative;
+        min-height: 620px;
+        perspective: 1000px;
+        animation: fade-in 900ms 180ms ease both;
+      }
+
+      .phone {
+        position: absolute;
+        right: 30px;
+        top: 32px;
+        width: min(330px, 84vw);
+        min-height: 590px;
+        border: 1px solid rgba(248, 243, 234, 0.16);
+        border-radius: 34px;
+        padding: 16px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)),
+          #111b1a;
+        box-shadow:
+          0 50px 110px rgba(0, 0, 0, 0.44),
+          inset 0 0 0 8px rgba(255, 255, 255, 0.035);
+        transform: rotateY(-10deg) rotateX(4deg);
+        animation: float-phone 5.8s ease-in-out infinite;
+      }
+
+      .phone-screen {
+        min-height: 558px;
+        border-radius: 24px;
+        padding: 18px;
+        overflow: hidden;
+        background:
+          linear-gradient(180deg, rgba(84, 214, 194, 0.13), transparent 34%),
+          #f8f3ea;
+        color: #14211f;
+      }
+
+      .screen-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        font-size: 12px;
+        font-weight: 900;
+        color: #5d625d;
+      }
+
+      .prompt-card {
+        border: 1px solid rgba(20, 33, 31, 0.1);
+        border-radius: 8px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.76);
+        box-shadow: 0 12px 30px rgba(20, 33, 31, 0.08);
+      }
+
+      .prompt-card strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+
+      .prompt-card p {
+        margin: 0;
+        color: #58615e;
+        line-height: 1.45;
+        font-size: 13px;
+      }
+
+      .blueprint-card {
+        margin-top: 16px;
+        border-radius: 8px;
+        padding: 14px;
+        background: #14211f;
+        color: #f8f3ea;
+      }
+
+      .blueprint-card h3 {
+        margin: 0 0 10px;
+        font-size: 21px;
+      }
+
+      .pulse-line {
+        height: 9px;
+        border-radius: 999px;
+        margin: 8px 0;
+        background: linear-gradient(90deg, #54d6c2, rgba(84, 214, 194, 0.14), #ff9d73);
+        background-size: 220% 100%;
+        animation: shimmer 2.4s linear infinite;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 12px;
+      }
+
+      .chip {
+        border-radius: 999px;
+        padding: 6px 9px;
+        background: rgba(84, 214, 194, 0.12);
+        color: #aaf2e7;
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .orbit-card {
+        position: absolute;
+        left: 0;
+        border: 1px solid rgba(248, 243, 234, 0.15);
+        border-radius: 8px;
+        padding: 14px;
+        width: 235px;
+        background: rgba(248, 243, 234, 0.1);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.24);
+        animation: float-card 4.6s ease-in-out infinite;
+      }
+
+      .orbit-card.two {
+        left: 18px;
+        top: 390px;
+        width: 260px;
+        animation-delay: -1.4s;
+      }
+
+      .orbit-card.one {
+        top: 132px;
+      }
+
+      .orbit-card strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .orbit-card span {
+        color: rgba(248, 243, 234, 0.68);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .section {
+        padding: 78px 0;
+        color: #17201f;
+      }
+
+      .section h2 {
+        max-width: 760px;
+        margin: 0;
+        font-size: clamp(36px, 5vw, 64px);
+        line-height: 0.96;
+      }
+
+      .section-sub {
+        max-width: 620px;
+        color: #5d5850;
+        font-size: 18px;
+        line-height: 1.58;
+      }
+
+      .demo-panel {
+        margin-top: 26px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 0.86fr);
+        gap: 16px;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 220px;
+        resize: vertical;
+        border: 1px solid rgba(31, 37, 34, 0.14);
+        border-radius: 8px;
+        padding: 16px;
+        background: rgba(255, 253, 248, 0.82);
+        color: #17201f;
+        font: inherit;
+        line-height: 1.5;
+        outline-color: #185c62;
+        box-shadow: 0 18px 50px rgba(31, 37, 34, 0.08);
+      }
+
+      .result {
+        min-height: 220px;
+        border: 1px solid rgba(31, 37, 34, 0.12);
+        border-radius: 8px;
+        padding: 18px;
+        background: rgba(255, 253, 248, 0.9);
+        box-shadow: 0 18px 50px rgba(31, 37, 34, 0.08);
+      }
+
+      .result h3 {
+        margin: 0 0 8px;
+        font-size: 28px;
+      }
+
+      .result p {
+        color: #5d5850;
+        line-height: 1.5;
+      }
+
+      .result.empty {
+        display: grid;
+        place-items: center;
+        color: #6f6a61;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .identity-strip {
+        margin-top: 14px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .identity-row {
+        border: 1px solid rgba(31, 37, 34, 0.12);
+        border-radius: 8px;
+        padding: 10px 12px;
+        display: grid;
+        gap: 4px;
+        background: rgba(20, 33, 31, 0.045);
+      }
+
+      .identity-row span {
+        color: #6f6a61;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .identity-row strong,
+      .identity-row a {
+        color: #17201f;
+        overflow-wrap: anywhere;
+      }
+
+      .feature-grid {
+        margin-top: 28px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .feature {
+        min-height: 190px;
+        border: 1px solid rgba(31, 37, 34, 0.12);
+        border-radius: 8px;
+        padding: 18px;
+        display: grid;
+        align-content: end;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 253, 248, 0.86)),
+          #fffdf8;
+        box-shadow: 0 18px 50px rgba(31, 37, 34, 0.07);
+      }
+
+      .feature b {
+        font-size: 18px;
+      }
+
+      .feature span {
+        margin-top: 8px;
+        color: #5d5850;
+        line-height: 1.45;
+      }
+
+      .footer {
+        padding: 42px 0 34px;
+        color: #5d5850;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        animation: fade-up 800ms ease both;
+      }
+
+      .delay-1 {
+        animation-delay: 120ms;
+      }
+
+      .delay-2 {
+        animation-delay: 220ms;
+      }
+
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes float-phone {
+        0%,
+        100% {
+          transform: rotateY(-10deg) rotateX(4deg) translateY(0);
+        }
+        50% {
+          transform: rotateY(-7deg) rotateX(5deg) translateY(-16px);
+        }
+      }
+
+      @keyframes float-card {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      @keyframes shimmer {
+        from {
+          background-position: 0% 0;
+        }
+        to {
+          background-position: 220% 0;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .hero,
+        .demo-panel,
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stage {
+          min-height: 680px;
+        }
+
+        .phone {
+          right: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .orbit-card {
+          left: 0;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .nav-actions {
+          display: none;
+        }
+
+        .stage {
+          min-height: 600px;
+        }
+
+        .orbit-card {
+          display: none;
+        }
+
+        .phone {
+          width: 100%;
+          min-height: 540px;
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="shell">
+      <a href="/" class="brand"><span class="brand-mark">A</span><span>Ava</span></a>
+      <div class="nav-actions">
+        <a href="#try">Try it</a>
+        <a href="/admin">Admin</a>
+        <a class="primary" href="#try">Create agent</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="shell hero">
+        <div>
+          <div class="kicker">Community service agents, claimable later</div>
+          <h1>Describe the help. Ava builds the agent.</h1>
+          <p class="hero-copy">
+            Ava helps small nonprofits and community teams turn plain-language needs into safe,
+            claimable AI agents with human approval built into the workflow.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#try">Try the live blueprint</a>
+            <a class="button secondary" href="/admin">Open admin console</a>
+          </div>
+        </div>
+
+        <div class="stage" aria-hidden="true">
+          <div class="orbit-card one">
+            <strong>Stateless brain</strong>
+            <span>Transcript in, schema-valid JSON blueprint out.</span>
+          </div>
+          <div class="orbit-card two">
+            <strong>Canonical SAL</strong>
+            <span>Keypair, challenge, signature, token. No side channel.</span>
+          </div>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="screen-top"><span>AVA</span><span>blueprint-ready</span></div>
+              <div class="prompt-card">
+                <strong>Transcript</strong>
+                <p>“Build an assistant for a food pantry that summarizes intake notes and drafts follow-ups.”</p>
+              </div>
+              <div class="blueprint-card">
+                <h3>Food Pantry Follow-up Agent</h3>
+                <div class="pulse-line"></div>
+                <div class="pulse-line"></div>
+                <div class="chips">
+                  <span class="chip">summarize needs</span>
+                  <span class="chip">draft follow-up</span>
+                  <span class="chip">ask approval</span>
+                </div>
+              </div>
+              <div class="prompt-card" style="margin-top: 16px">
+                <strong>Identity</strong>
+                <p>Anonymous agent initialized. Human can claim when ready.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="try" class="shell section">
+        <div class="reveal">
+          <h2>Built for teams doing real-world care work.</h2>
+          <p class="section-sub">
+            Type a real community-service need. Ava will generate a fresh blueprint and create a live staging agent identity.
+          </p>
+        </div>
+
+        <div class="demo-panel reveal delay-1">
+          <div>
+            <textarea id="transcript" placeholder="Describe the agent you want. Example: Build an assistant for a food pantry that collects intake notes, summarizes urgent needs, drafts follow-up messages, and asks a human before sending."></textarea>
+            <div class="hero-actions" style="margin-top: 14px">
+              <button id="create">Create My Ava</button>
+              <button id="generate" class="button secondary">Preview Blueprint Only</button>
+              <a class="button secondary" href="/admin">Admin console</a>
+            </div>
+          </div>
+          <div id="result" class="result empty">Describe a nonprofit or community-care workflow to run a live end-to-end flow.</div>
+        </div>
+
+        <div class="feature-grid reveal delay-2">
+          <div class="feature">
+            <b>Plain language setup</b>
+            <span>A program coordinator can describe the workflow without writing code.</span>
+          </div>
+          <div class="feature">
+            <b>Human approval first</b>
+            <span>Blueprints can require review before messages, referrals, or external actions.</span>
+          </div>
+          <div class="feature">
+            <b>Claimable ownership</b>
+            <span>Agents can start anonymously, then transfer to the responsible organization.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell footer">
+      <span>Ava hackathon preview</span>
+      <span>Brain: Cloudflare Workers AI · Identity: Vibebase SAL · Mobile: Expo</span>
+    </footer>
+
+    <script>
+      const create = document.getElementById("create");
+      const generate = document.getElementById("generate");
+      const transcript = document.getElementById("transcript");
+      const result = document.getElementById("result");
+
+      function requireTranscript() {
+        const value = transcript.value.trim();
+        if (!value) {
+          throw new Error("Describe the agent you want Ava to create first.");
+        }
+
+        return value;
+      }
+
+      function renderBlueprint(data, identity) {
+        const actionLabels = data.actions
+          .map((action) => `<span class="chip">${action.label}</span>`)
+          .join("");
+        const identityMarkup = identity
+          ? `
+            <div class="identity-strip">
+              <div class="identity-row"><span>Staging agent</span><strong>${identity.agentId}</strong></div>
+              <div class="identity-row"><span>Tier</span><strong>${identity.tier || identity.status}</strong></div>
+              <div class="identity-row"><span>Token</span><strong>${identity.tokenPreview}</strong></div>
+              ${
+                identity.claimUrl
+                  ? `<div class="identity-row"><span>Claim URL</span><a href="${identity.claimUrl}" target="_blank" rel="noreferrer">${identity.claimUrl}</a></div>`
+                  : ""
+              }
+            </div>
+          `
+          : "";
+
+        result.className = "result";
+        result.innerHTML = `
+          <h3>${data.name}</h3>
+          <p>${data.description}</p>
+          <div class="chips">${actionLabels}</div>
+          ${identityMarkup}
+        `;
+      }
+
+      create.addEventListener("click", async () => {
+        create.disabled = true;
+        generate.disabled = true;
+        result.className = "result";
+        result.innerHTML = "<strong>Creating Ava...</strong><p>Generating a blueprint, initializing a staging identity, signing a challenge, and exchanging an agent token.</p>";
+
+        try {
+          const response = await fetch("/api/create-agent", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ transcript: requireTranscript() })
+          });
+          const envelope = await response.json();
+
+          if (!envelope.success) {
+            throw new Error(envelope.error?.message || "Ava could not create this agent.");
+          }
+
+          renderBlueprint(envelope.data.blueprint, envelope.data.identity);
+        } catch (error) {
+          result.className = "result";
+          result.innerHTML = `<h3>Try again</h3><p>${error instanceof Error ? error.message : "Something went wrong."}</p>`;
+        } finally {
+          create.disabled = false;
+          generate.disabled = false;
+        }
+      });
+
+      generate.addEventListener("click", async () => {
+        generate.disabled = true;
+        create.disabled = true;
+        result.className = "result";
+        result.innerHTML = "<strong>Generating...</strong><p>Ava Brain is turning your transcript into schema-valid JSON.</p>";
+
+        try {
+          const response = await fetch("/api/generate-blueprint", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ transcript: requireTranscript() })
+          });
+          const envelope = await response.json();
+
+          if (!envelope.success) {
+            throw new Error(envelope.error?.message || "Ava Brain returned an error.");
+          }
+
+          renderBlueprint(envelope.data);
+        } catch (error) {
+          result.innerHTML = `<h3>Try again</h3><p>${error instanceof Error ? error.message : "Something went wrong."}</p>`;
+        } finally {
+          generate.disabled = false;
+          create.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

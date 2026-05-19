@@ -1,0 +1,30 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "ava-mobile-preview",
+  "account_id": "7bf764fb33314638c163c8d9dbccd636",
+  "main": "web-preview/worker.ts",
+  "compatibility_date": "2026-05-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "rules": [
+    {
+      "type": "Text",
+      "globs": ["**/*.html"],
+      "fallthrough": true
+    }
+  ],
+  "services": [
+    {
+      "binding": "AVA_BRAIN",
+      "service": "ava-brain"
+    }
+  ],
+  "vars": {
+    "EXPO_PUBLIC_AVA_BRAIN_URL": "https://ava-brain.solitary-mode-3b63.workers.dev",
+    "EXPO_PUBLIC_VIBEBASE_IDENTITY_URL": "https://identity.vibebase.app",
+    "EXPO_PUBLIC_VIBEBASE_GATEWAY_URL": "https://gateway.vibebase.app"
+  }
+}

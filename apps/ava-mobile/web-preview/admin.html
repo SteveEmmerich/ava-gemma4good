@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ava Hackathon Demo</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f4f0e7;
+        color: #182121;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          linear-gradient(90deg, rgba(24, 92, 98, 0.055) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(24, 92, 98, 0.055) 1px, transparent 1px),
+          radial-gradient(circle at 14% 10%, rgba(24, 92, 98, 0.18), transparent 26%),
+          radial-gradient(circle at 92% 4%, rgba(181, 70, 49, 0.13), transparent 23%),
+          linear-gradient(180deg, #fffaf1 0%, #eee8dc 100%);
+        background-size:
+          34px 34px,
+          34px 34px,
+          auto,
+          auto,
+          auto;
+      }
+
+      main {
+        width: min(1200px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 26px 0 42px;
+        display: grid;
+        gap: 20px;
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border: 1px solid rgba(216, 208, 194, 0.9);
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: rgba(255, 253, 248, 0.72);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 900;
+      }
+
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: #185c62;
+        color: #fffdf8;
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nav-links span {
+        border: 1px solid #d8d0c2;
+        border-radius: 999px;
+        padding: 6px 10px;
+        background: rgba(255, 250, 242, 0.78);
+        color: #5a554d;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+        gap: 24px;
+        align-items: stretch;
+        padding: 18px 0 2px;
+      }
+
+      .eyebrow {
+        color: #185c62;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 790px;
+        margin: 8px 0 0;
+        font-size: clamp(40px, 7vw, 76px);
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .summary {
+        max-width: 620px;
+        color: #5a554d;
+        line-height: 1.55;
+        font-size: 17px;
+      }
+
+      .status-pill {
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+        border: 1px solid #d8d0c2;
+        border-radius: 8px;
+        padding: 16px;
+        background: rgba(255, 253, 248, 0.82);
+        box-shadow: 0 18px 50px rgba(36, 33, 30, 0.08);
+      }
+
+      .status-pill strong {
+        font-size: 13px;
+        color: #6f6a61;
+        text-transform: uppercase;
+      }
+
+      .status-pill span {
+        color: #1f2424;
+        font-weight: 800;
+      }
+
+      .hero-meter {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .hero-meter div {
+        min-height: 68px;
+        border: 1px solid #ded6c8;
+        border-radius: 8px;
+        padding: 10px;
+        display: grid;
+        align-content: end;
+        gap: 4px;
+        background: #fffaf2;
+      }
+
+      .hero-meter strong {
+        font-size: 18px;
+      }
+
+      .hero-meter small {
+        color: #6f6a61;
+        font-weight: 800;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(330px, 0.88fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .panel {
+        border: 1px solid #d8d0c2;
+        border-radius: 8px;
+        background: rgba(255, 253, 248, 0.86);
+        padding: 20px;
+        display: grid;
+        gap: 14px;
+        box-shadow: 0 18px 55px rgba(36, 33, 30, 0.07);
+      }
+
+      .panel h2 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: 0;
+      }
+
+      label {
+        font-weight: 800;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 184px;
+        resize: vertical;
+        border: 1px solid #d7d0c3;
+        border-radius: 8px;
+        padding: 14px;
+        background: #fffdf8;
+        color: #202124;
+        font: inherit;
+        line-height: 1.45;
+        outline-color: #185c62;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      button {
+        min-height: 44px;
+        border: 0;
+        border-radius: 8px;
+        padding: 0 16px;
+        background: #185c62;
+        color: white;
+        font: inherit;
+        font-weight: 850;
+        cursor: pointer;
+        box-shadow: 0 10px 22px rgba(24, 92, 98, 0.22);
+        transition:
+          transform 120ms ease,
+          box-shadow 120ms ease,
+          background 120ms ease;
+      }
+
+      button:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 26px rgba(24, 92, 98, 0.24);
+      }
+
+      button.secondary {
+        background: #b54631;
+        box-shadow: 0 10px 22px rgba(181, 70, 49, 0.2);
+      }
+
+      button.ghost {
+        color: #202124;
+        border: 1px solid #cfc5b5;
+        background: #fffaf2;
+        box-shadow: none;
+      }
+
+      button:disabled {
+        background: #c9c2b4;
+        cursor: not-allowed;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 30px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+        padding: 10px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+      }
+
+      .dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: #ded6c8;
+        color: #6f6a61;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .step.done .dot {
+        background: #185c62;
+        color: #fff;
+      }
+
+      .step.done {
+        border-color: rgba(24, 92, 98, 0.18);
+        background: rgba(24, 92, 98, 0.055);
+      }
+
+      .step.active .dot {
+        background: #b23f2d;
+        color: #fff;
+      }
+
+      .step.active {
+        border-color: rgba(181, 70, 49, 0.22);
+        background: rgba(181, 70, 49, 0.06);
+      }
+
+      .step strong {
+        display: block;
+        font-size: 15px;
+      }
+
+      .step span {
+        display: block;
+        margin-top: 2px;
+        color: #6f6a61;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .message {
+        border-top: 1px solid #d8d0c2;
+        padding-top: 14px;
+        color: #73520d;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+
+      .message.error {
+        color: #9f1d1d;
+      }
+
+      .blueprint {
+        display: none;
+        gap: 12px;
+        border-color: rgba(24, 92, 98, 0.28);
+        background: linear-gradient(180deg, rgba(255, 253, 248, 0.92), rgba(238, 248, 247, 0.86));
+      }
+
+      .blueprint h3 {
+        margin: 0;
+        font-size: 30px;
+        letter-spacing: 0;
+      }
+
+      .blueprint p {
+        margin: 0;
+        color: #3d3a35;
+        line-height: 1.55;
+      }
+
+      .chips,
+      .metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip,
+      .metric {
+        border: 1px solid #d7d0c3;
+        border-radius: 999px;
+        padding: 7px 11px;
+        background: rgba(255, 253, 248, 0.82);
+        color: #3d3a35;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .chip {
+        border-color: rgba(24, 92, 98, 0.24);
+        background: rgba(24, 92, 98, 0.08);
+        color: #185c62;
+      }
+
+      .metric {
+        border-radius: 8px;
+        display: grid;
+        gap: 3px;
+        min-width: 160px;
+        flex: 1;
+        box-shadow: 0 10px 28px rgba(36, 33, 30, 0.05);
+      }
+
+      .metric span {
+        color: #6f6a61;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .metric strong {
+        overflow-wrap: anywhere;
+      }
+
+      .contract {
+        display: grid;
+        gap: 8px;
+      }
+
+      code {
+        display: block;
+        overflow-wrap: anywhere;
+        border: 1px solid #d8d0c2;
+        border-radius: 8px;
+        padding: 10px;
+        background: #1f2525;
+        color: #eef7f5;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .panel-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .live-dot {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #185c62;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .live-dot::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #2d9c72;
+        box-shadow: 0 0 0 4px rgba(45, 156, 114, 0.14);
+      }
+
+      @media (max-width: 820px) {
+        nav,
+        header,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .status-pill {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <div class="brand"><span class="brand-mark">A</span><span>Ava</span></div>
+        <div class="nav-links">
+          <span>Cloudflare Brain</span>
+          <span>Vibebase SAL</span>
+          <span>Expo Mobile</span>
+        </div>
+      </nav>
+
+      <header>
+        <div>
+          <div class="eyebrow">Ava hackathon console</div>
+          <h1>Transcript to agent, live on Vibebase.</h1>
+          <p class="summary">
+            This browser demo shows the v1 flow: Ava Brain creates a blueprint, then the server preview
+            proves the SAL token path against Vibebase staging with a real Ed25519 keypair.
+          </p>
+        </div>
+        <div class="status-pill">
+          <strong>Lifecycle phase</strong>
+          <span id="phase">anonymous</span>
+          <div class="hero-meter">
+            <div><strong>1</strong><small>Worker</small></div>
+            <div><strong>4</strong><small>SAL calls</small></div>
+            <div><strong>0</strong><small>DB writes</small></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="panel">
+          <div class="panel-title"><h2>Create Blueprint</h2><span class="live-dot">Live</span></div>
+          <label for="transcript">Transcript</label>
+          <textarea id="transcript">Build an assistant for a food pantry that collects intake notes, summarizes urgent needs, drafts follow-up messages, remembers dietary preferences, and asks a human before sending anything.</textarea>
+          <div class="actions">
+            <button id="generate">Generate Blueprint</button>
+            <button id="smoke" class="secondary" disabled>Run Live SAL Smoke</button>
+            <button id="reset" class="ghost">Reset Demo</button>
+          </div>
+          <div id="message" class="message">Ready. Ava Brain is expected at localhost:8787.</div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-title"><h2>Lifecycle</h2><span class="live-dot">SAL</span></div>
+          <div class="timeline">
+            <div class="step active" data-step="anonymous">
+              <div class="dot">1</div>
+              <div><strong>Anonymous agent</strong><span>Local keypair, no human owner yet.</span></div>
+            </div>
+            <div class="step" data-step="blueprint">
+              <div class="dot">2</div>
+              <div><strong>Blueprint generated</strong><span>Worker returns schema-valid JSON only.</span></div>
+            </div>
+            <div class="step" data-step="token">
+              <div class="dot">3</div>
+              <div><strong>Identity token exchanged</strong><span>Signed challenge against Vibebase staging.</span></div>
+            </div>
+            <div class="step" data-step="deploy">
+              <div class="dot">4</div>
+              <div><strong>Ready for deploy UX</strong><span>Native app will add Clerk claim and deploy controls.</span></div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="blueprint" class="panel blueprint">
+        <div class="eyebrow">Ava Brain Output</div>
+        <h3 id="blueprint-name"></h3>
+        <p id="blueprint-description"></p>
+        <div id="actions" class="chips"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><h2>Live Staging Result</h2><span class="live-dot">Staging</span></div>
+        <div id="metrics" class="metrics">
+          <div class="metric"><span>Identity</span><strong>waiting</strong></div>
+          <div class="metric"><span>Gateway</span><strong>configured</strong></div>
+          <div class="metric"><span>Token</span><strong>not exchanged</strong></div>
+        </div>
+      </section>
+
+      <section class="panel contract">
+        <h2>Contracts in Play</h2>
+        <code>POST /generate-blueprint -> { success, data: Blueprint } | { success:false, error }</code>
+        <code>POST https://identity.vibebase.app/v1/agent/init -> anonymous agent identity</code>
+        <code>POST https://identity.vibebase.app/v1/challenge + /v1/token -> signed SAL token exchange</code>
+      </section>
+    </main>
+
+    <script>
+      const phase = document.getElementById("phase");
+      const message = document.getElementById("message");
+      const generate = document.getElementById("generate");
+      const smoke = document.getElementById("smoke");
+      const reset = document.getElementById("reset");
+      const transcript = document.getElementById("transcript");
+      const blueprint = document.getElementById("blueprint");
+      const blueprintName = document.getElementById("blueprint-name");
+      const blueprintDescription = document.getElementById("blueprint-description");
+      const actions = document.getElementById("actions");
+      const metrics = document.getElementById("metrics");
+
+      function setPhase(next) {
+        phase.textContent = next;
+        document.querySelectorAll(".step").forEach((step) => {
+          step.classList.remove("active", "done");
+        });
+
+        const order = ["anonymous", "blueprint", "token", "deploy"];
+        const index = order.indexOf(next);
+        order.forEach((name, stepIndex) => {
+          const element = document.querySelector(`[data-step="${name}"]`);
+          if (!element) return;
+          if (stepIndex < index) element.classList.add("done");
+          if (stepIndex === index) element.classList.add("active");
+        });
+      }
+
+      function setMessage(text, isError = false) {
+        message.textContent = text;
+        message.className = isError ? "message error" : "message";
+      }
+
+      function setMetrics(items) {
+        metrics.innerHTML = "";
+        for (const item of items) {
+          const metric = document.createElement("div");
+          metric.className = "metric";
+          metric.innerHTML = `<span>${item.label}</span><strong>${item.value}</strong>`;
+          metrics.appendChild(metric);
+        }
+      }
+
+      generate.addEventListener("click", async () => {
+        generate.disabled = true;
+        smoke.disabled = true;
+        setPhase("anonymous");
+        setMessage("Generating schema-valid blueprint through Ava Brain...");
+
+        try {
+          const response = await fetch("/api/generate-blueprint", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ transcript: transcript.value })
+          });
+          const envelope = await response.json();
+
+          if (!envelope.success) {
+            throw new Error(envelope.error?.message || "Ava Brain returned an error.");
+          }
+
+          const data = envelope.data;
+          blueprintName.textContent = data.name;
+          blueprintDescription.textContent = data.description;
+          actions.innerHTML = "";
+          for (const action of data.actions) {
+            const chip = document.createElement("span");
+            chip.className = "chip";
+            chip.textContent = action.label;
+            actions.appendChild(chip);
+          }
+
+          blueprint.style.display = "grid";
+          smoke.disabled = false;
+          setPhase("blueprint");
+          setMessage("Blueprint generated. Run the live SAL smoke to prove staging identity.");
+        } catch (error) {
+          setPhase("anonymous");
+          setMessage(error instanceof Error ? error.message : "Something went wrong.", true);
+        } finally {
+          generate.disabled = false;
+        }
+      });
+
+      smoke.addEventListener("click", async () => {
+        smoke.disabled = true;
+        generate.disabled = true;
+        setMessage("Creating staging agent, signing token challenge, and exchanging JWT...");
+
+        try {
+          const response = await fetch("/api/live-sal-smoke", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: `ava-hackathon-${Date.now()}` })
+          });
+          const envelope = await response.json();
+
+          if (!envelope.success) {
+            throw new Error(envelope.error?.message || "Live SAL smoke failed.");
+          }
+
+          setPhase("deploy");
+          setMessage("Live staging SAL smoke passed. Ava is ready for the native claim/deploy UX.");
+          setMetrics([
+            { label: "Agent", value: envelope.data.agentId },
+            { label: "Tier", value: envelope.data.tier || envelope.data.status },
+            { label: "Token", value: envelope.data.tokenPreview },
+            { label: "Expires", value: new Date(envelope.data.expiresAt).toLocaleTimeString() }
+          ]);
+        } catch (error) {
+          setPhase("blueprint");
+          setMessage(error instanceof Error ? error.message : "Something went wrong.", true);
+          smoke.disabled = false;
+        } finally {
+          generate.disabled = false;
+        }
+      });
+
+      reset.addEventListener("click", () => {
+        blueprint.style.display = "none";
+        actions.innerHTML = "";
+        smoke.disabled = true;
+        setPhase("anonymous");
+        setMessage("Ready. Ava Brain is expected at localhost:8787.");
+        setMetrics([
+          { label: "Identity", value: "waiting" },
+          { label: "Gateway", value: "configured" },
+          { label: "Token", value: "not exchanged" }
+        ]);
+      });
+    </script>
+  </body>
+</html>
