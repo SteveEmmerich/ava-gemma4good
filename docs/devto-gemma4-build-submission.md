@@ -31,7 +31,7 @@ Live demo: https://ava-gemma4good.pages.dev
 
 Ava Brain Worker: https://ava-brain.solitary-mode-3b63.workers.dev
 
-Demo video: TODO - add public video URL
+Walkthrough: the live demo is the runnable walkthrough; judges can create a fresh staging agent directly from the page.
 
 In the current deployed flow:
 
@@ -159,4 +159,4 @@ The long-term goal is not to replace nonprofit staff. It is to help small teams 
 
 ## Team
 
-TODO - add DEV handles for any teammates, or remove this section for a solo submission.
+Solo submission.
