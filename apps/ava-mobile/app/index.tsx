@@ -347,6 +347,8 @@ export default function Index() {
 
                   <BlueprintPanel blueprint={state.blueprint} />
 
+                  {state.blueprint ? <MiniUsagePlan blueprint={state.blueprint} /> : null}
+
                   <View style={{ gap: 8 }}>
                     <PulseLine />
                     <MetricRow label="Agent" value={state.agentId ? shortId(state.agentId) : "pending"} light />
@@ -571,6 +573,8 @@ function PromptComposer({
 
       {state.agentId ? <StagingIdentity state={state} /> : null}
 
+      {state.blueprint ? <HumanReviewPlan blueprint={state.blueprint} hasIdentity={!!state.agentId} /> : null}
+
       <View style={{ flexDirection: "row", gap: 10, flexWrap: "wrap" }}>
         <ActionButton
           disabled={busy}
@@ -637,6 +641,129 @@ function StagingIdentity({ state }: { state: AvaLifecycleState }) {
           Claim URL: {state.claimUrl}
         </Text>
       ) : null}
+    </View>
+  );
+}
+
+function HumanReviewPlan({ blueprint, hasIdentity }: { blueprint: Blueprint; hasIdentity: boolean }) {
+  const primaryAction = blueprint.actions[0]?.label ?? "Start with the highest-risk workflow";
+  const primaryBoundary = blueprint.persona.boundaries[0] ?? "Decide what must require staff approval";
+
+  return (
+    <View
+      style={{
+        gap: 14,
+        padding: 14,
+        borderRadius: 8,
+        borderCurve: "continuous",
+        borderWidth: 1,
+        borderColor: "rgba(248, 243, 234, 0.16)",
+        backgroundColor: "rgba(248, 243, 234, 0.08)"
+      }}
+    >
+      <View style={{ gap: 6 }}>
+        <Text selectable style={{ color: "#f8f3ea", fontSize: 20, lineHeight: 25, fontWeight: "900" }}>
+          Review this plan before anyone uses it
+        </Text>
+        <Text selectable style={{ color: "rgba(248, 243, 234, 0.72)", fontSize: 15, lineHeight: 22 }}>
+          Ava created a safe starting point: a plain-English agent plan, visible safety boundaries, and
+          {hasIdentity ? " a claimable staging identity." : " a preview you can create into a staging identity."}
+        </Text>
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <ReviewRow label="What this assistant is for" value={blueprint.description} />
+        <ReviewRow label="First workflow to test" value={primaryAction} />
+        <ReviewRow label="Approval boundary to confirm" value={primaryBoundary} />
+      </View>
+
+      <View
+        style={{
+          gap: 10,
+          padding: 12,
+          borderRadius: 8,
+          borderCurve: "continuous",
+          backgroundColor: "rgba(84, 214, 194, 0.1)"
+        }}
+      >
+        <Text selectable style={{ color: "#aaf2e7", fontSize: 13, fontWeight: "900" }}>
+          Now that you have this, use it like this
+        </Text>
+        <InstructionStep index={1} text="Read the purpose and remove anything that does not match the real team workflow." />
+        <InstructionStep index={2} text="Check each action and decide what data, tool, or staff role it needs before deployment." />
+        <InstructionStep index={3} text="Confirm the human approval rules before the assistant drafts, sends, or escalates anything." />
+        <InstructionStep
+          index={4}
+          text={
+            hasIdentity
+              ? "Share the plan and claim URL with the person who will own the assistant."
+              : "Create the staging identity when the plan is ready to hand to an owner."
+          }
+        />
+        <InstructionStep index={5} text="Use the blueprint as the implementation checklist for the technical partner or admin." />
+      </View>
+    </View>
+  );
+}
+
+function MiniUsagePlan({ blueprint }: { blueprint: Blueprint }) {
+  const boundary = blueprint.persona.boundaries[0] ?? "Keep staff approval visible";
+
+  return (
+    <View
+      style={{
+        gap: 8,
+        padding: 12,
+        borderRadius: 8,
+        borderCurve: "continuous",
+        backgroundColor: "rgba(255, 255, 255, 0.78)",
+        borderWidth: 1,
+        borderColor: "rgba(20, 33, 31, 0.1)"
+      }}
+    >
+      <Text selectable style={{ color: "#14211f", fontSize: 13, fontWeight: "900" }}>
+        Human handoff
+      </Text>
+      <Text selectable style={{ color: "#58615e", fontSize: 13, lineHeight: 19 }}>
+        Review {blueprint.name}, confirm "{boundary}", then share the plan and claim URL with the owner.
+      </Text>
+    </View>
+  );
+}
+
+function ReviewRow({ label, value }: { label: string; value: string }) {
+  return (
+    <View style={{ gap: 4 }}>
+      <Text selectable style={{ color: "#aaf2e7", fontSize: 12, fontWeight: "900" }}>
+        {label}
+      </Text>
+      <Text selectable style={{ color: "rgba(248, 243, 234, 0.78)", lineHeight: 21 }}>
+        {value}
+      </Text>
+    </View>
+  );
+}
+
+function InstructionStep({ index, text }: { index: number; text: string }) {
+  return (
+    <View style={{ flexDirection: "row", gap: 9, alignItems: "flex-start" }}>
+      <View
+        style={{
+          width: 24,
+          height: 24,
+          borderRadius: 999,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#54d6c2"
+        }}
+      >
+        <Text selectable style={{ color: "#081110", fontSize: 12, fontWeight: "900" }}>
+          {index}
+        </Text>
+      </View>
+      <Text selectable style={{ flex: 1, color: "rgba(248, 243, 234, 0.78)", lineHeight: 21 }}>
+        {text}
+      </Text>
     </View>
   );
 }
